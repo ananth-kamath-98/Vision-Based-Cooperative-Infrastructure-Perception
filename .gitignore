@@ -15,5 +15,6 @@ dataset/video_clips/*.mp4
 dataset/cam/
 dataset/frame_stitching/
 dataset/ground_truths/
+evaluation/
 object_detection/*.pt
 *.pt
