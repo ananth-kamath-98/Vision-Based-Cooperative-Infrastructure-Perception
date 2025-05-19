@@ -1,17 +1,21 @@
-import os
 from pathlib import Path
-
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from tqdm import tqdm
 
 if __name__ == '__main__':
-    full_length_videos = Path(os.getcwd(), "..\\dataset\\cam")
+    script_dir = Path(__file__).resolve().parent
+    project_root = script_dir.parent
 
-    output_directory = Path(os.getcwd(), "..\\dataset\\video_clips")
+    full_length_videos = project_root / "dataset" / "cam"
+    output_directory = project_root / "dataset" / "video_clips"
+    output_directory.mkdir(parents=True, exist_ok=True)
 
-    video_count = 1
-    for directory in tqdm(list(full_length_videos.iterdir())):
-        for video in directory.iterdir():
-            ffmpeg_extract_subclip(video, 0, 10, targetname=Path
-            (output_directory, video.name))
-        video_count += 1
+    for directory in tqdm(full_length_videos.iterdir()):
+        for video_file in directory.iterdir():
+            output_path = output_directory / video_file.name
+            ffmpeg_extract_subclip(
+                str(video_file),
+                0,
+                10,
+                str(output_path)
+            )

@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 
 
@@ -18,6 +20,29 @@ def f_jacobian(x, dt):
     F[1, 3] = dt
     return F
 
+def initial_orientation(prev_pos, curr_pos, epsilon=1e-6):
+    dx = curr_pos[ 0 ] - prev_pos[ 0 ]
+    dy = curr_pos[ 1 ] - prev_pos[ 1 ]
+    if abs(dx) < epsilon and abs(dy) < epsilon:
+        return 0.0
+    return math.atan2(dy, dx)
+
+
+def initial_position(prev_pos, curr_pos, dt):
+    dx = curr_pos[ 0 ] - prev_pos[ 0 ]
+    dy = curr_pos[ 1 ] - prev_pos[ 1 ]
+    vx = dx / dt
+    vy = dy / dt
+    return vx, vy
+
+
+def unwrap_angle(angle, prev_angle):
+    diff = angle - prev_angle
+    while diff > math.pi:
+        diff -= 2 * math.pi
+    while diff <= -math.pi:
+        diff += 2 * math.pi
+    return prev_angle + diff
 
 class EKFTracker:
     def __init__(self, initial_state, P, Q, R, dt):

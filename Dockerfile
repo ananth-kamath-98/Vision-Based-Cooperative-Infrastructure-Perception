@@ -1,5 +1,5 @@
 # 1. Base Python image
-FROM python:3.12-slim
+FROM python:3.12.3
 
 # 2. Create a non-root user
 RUN useradd --create-home --shell /bin/bash vcip
@@ -21,11 +21,6 @@ RUN chmod +x entrypoint.sh \
 # 7. Switch to non-root user
 USER vcip
 
-# 8. Document Jupyter port
-EXPOSE 8888
-
 # 9. Entrypoint for setup logic
 ENTRYPOINT ["./entrypoint.sh"]
-
-# 10. Default to launching Jupyter Notebook
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+CMD ["python", "pipeline.py"]
