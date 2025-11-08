@@ -62,7 +62,7 @@ def main():
 
         # 7. Run YOLO Detection
         # We run detection and filter for our desired classes
-        results = model(frame, conf=0.9, iou=0.5, classes=CLASSES_TO_TRACK, verbose=False, device=0)
+        results = model(frame, conf=0.9, iou=0.8, classes=CLASSES_TO_TRACK, verbose=False, device=0)
 
         # 8. Format Detections
         # Our tracker expects a list of [x, y] centroids

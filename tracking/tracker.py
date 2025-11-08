@@ -17,18 +17,23 @@ R = np.array([[R_val, 0],
               [0, R_val]]).astype(float)
 
 # Process Noise Covariance Matrix
+Q_val_pos = 0.1       # Noise for px, py (let's keep this low)
+Q_val_v = 10.0        # INCREASED: More noise for velocity
+Q_val_theta = 0.1     # Noise for theta (let's keep this low)
+Q_val_theta_dot = 10.0  # INCREASED: More noise for turn rate
+
 Q = np.diag([
-    0.1,  # noise in px
-    0.1,  # noise in py
-    1.0,  # noise in v
-    0.1,  # noise in theta
-    1.0  # noise in theta_dot
+    Q_val_pos,
+    Q_val_pos,
+    Q_val_v,
+    Q_val_theta,
+    Q_val_theta_dot
 ]).astype(float)
 
 # Track Deletion Threshold
 MAX_MISSED_FRAMES = 10
 
-DISTANCE_THRESHOLD = 50.0
+DISTANCE_THRESHOLD = 100.0
 
 
 class Tracker:
