@@ -6,8 +6,8 @@ from . import config
 
 def detect_and_cluster_vehicles(model, frame):
     """
-    Performs vehicle detection and clusters them to find centroids.
-    Returns a list of fused centroid points for a single camera view.
+    Performs vehicle detection and finds their bottom-center points.
+    Returns a list of centroid points for a single camera view.
     """
     results = model(frame, conf=config.DETECTION_CONFIDENCE,
                     iou=config.DETECTION_IOU, classes=config.VEHICLE_CLASSES,

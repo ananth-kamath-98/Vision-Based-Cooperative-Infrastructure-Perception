@@ -8,24 +8,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 
 # --- Model and Detection Configuration ---
-MODEL_PATH = os.path.join(BASE_DIR, "../weights/yolo11m_custom_300e.pt")
-VEHICLE_CLASSES = [0]
-DETECTION_CONFIDENCE = 0.9
+MODEL_PATH = os.path.join(BASE_DIR, "../weights/yolo11m.pt")
+VEHICLE_CLASSES = [2, 3, 5, 7]
+DETECTION_CONFIDENCE = 0.5
 DETECTION_IOU = 0.5
 DETECTION_OFFSET_FACTOR = 0.1
 INTRA_CAM_CLUSTER_EPSILON = 10
 
 # --- Tracking Parameters ---
 # EKF State: [x, y, vx, vy, theta]
-Q_MATRIX = np.diag([10, 10, 50, 50, 10])
-R_MATRIX = np.diag([0.5, 0.5, 0.1])  # Measurement noise
-P_MATRIX = np.eye(5) * 1.0  # Initial covariance
-
-ASSOCIATION_THRESHOLD = 100  # Max distance (pixels) for association
-MAX_MISSED_FRAMES = 5  # Frames before a tracker is 'lost'
-LOST_TRACKER_TIMEOUT = 15  # Frames before a 'lost' tracker is deleted
+# Q_MATRIX = np.diag([10, 10, 50, 50, 10])
+# R_MATRIX = np.diag([10, 10, 50])  # Measurement noise
+# P_MATRIX = np.eye(5) * 50
+#
+# ASSOCIATION_THRESHOLD = 100  # Max distance (pixels) for association
+# MAX_MISSED_FRAMES = 15  # Frames before a tracker is 'lost'
+# LOST_TRACKER_TIMEOUT = 15  # Frames before a 'lost' tracker is deleted
 FRAME_RATE = 30
-DT = 1 / FRAME_RATE
+# DT = 1 / FRAME_RATE
 FUSION_DISTANCE_THRESHOLD = 60
 
 DIR_TO_THETA = {
@@ -40,6 +40,7 @@ DIR_TO_THETA = {
 LUMPI_CONFIG = {
     "name": "LUMPI",
     "satellite_image_path": "../camera_data/LUMPI/top_down_view/satellite_image.png",
+    "results_filename": "lumpi_tracking_results.txt",
     "cameras": {
         "cam5": {
             "video_path": "../dataset/cam/5/cam_5.mp4",
@@ -88,7 +89,7 @@ LUMPI_CONFIG = {
 CARLA_CONFIG = {
     "name": "CarLA",
     "satellite_image_path": "../camera_data/CarLA/top_down_view/satellite_image.jpg",
-    # Placeholder
+    "results_filename": "carla_tracking_results.txt",
     "cameras": {
         "cam1": {
             "video_path": "../dataset/CarLA/Camera_1/video/Camera_1.mp4",
