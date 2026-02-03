@@ -53,44 +53,52 @@ The system processes multiple camera streams in a sequential pipeline to produce
     pip install -r requirements.txt
     ```
 
-4.  **Download the LUMPI Dataset:**
-    Download the dataset from the official source (e.g., `Measurement6/cam.zip.001`).
-    * **Direct Link:** [https://data.uni-hannover.de:8080/dataset/upload/users/ikg/busch/LUMPI/Measurement6/cam.zip.001](https://data.uni-hannover.de:8080/dataset/upload/users/ikg/busch/LUMPI/Measurement6/cam.zip.001)
-    * Extract the multi-part `.zip` files (using a tool like 7-Zip) into the `dataset/` directory.
+4.  **Download Project Data:**
+    For the pipeline to function, you must download the required data folders (`dataset`, `weights`, and `camera_data`) from the provided Google Drive link.
+    
+    *   **Google Drive Link:** [LINK] (Private link to be provided)
 
-5.  **Prepare Video Clips:**
-    This solution is tested on 10-second clips from each camera perspective. To generate these clips, run all the cells in the `dataset_setup/video_clippings.ipynb` notebook. This will create new video files in the `dataset/video_clips/` directory.
+    **Folder Contents:**
+    *   `dataset/`: Contains the video clips (`video_clips/`) and ground truth data (`LUMPI/LUMPI_gt.csv`) required for processing and evaluation.
+    *   `weights/`: Contains the pre-trained YOLO model weights (e.g., `yolov8s_lumpi_custom.pt`, `yolo11m.pt`).
+    *   `camera_data/`: Contains essential calibration files, including homography matrices and top-down satellite images for projection.
 
-6.  **Download YOLOv8s Weights:**
-    The project uses the `yolov8s.pt` model weights. If you don't have them, download them from the official Ultralytics release page.
-    * **Link:** [YOLOv8s weights](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt)
-    * Place the downloaded `yolov8s.pt` file in the root directory of the project.
-
-7.  **Extract Individual Frames (Optional):**
-    If you need to generate a custom dataset for evaluation or fine-tuning, you can extract individual frames from the videos. Run the `dataset_setup/extracting_frames.ipynb` notebook.
+    **Action:** Unzip these folders into the root directory of the repository. Your directory structure should look like this:
+    ```
+    Vision-Based-CIP/
+    ├── dataset/
+    ├── weights/
+    ├── camera_data/
+    ├── multi_camera_tracking_pipeline/
+    └── ...
+    ```
 
 ***
 
 ## Usage
 
-The main pipeline is run from the `pipeline.ipynb` Jupyter Notebook.
+The main pipeline is executed via the command line using `multi_camera_tracking_pipeline/main.py`.
 
 ### Configuration
-Before running, you **must** update the file paths inside the `pipeline.ipynb` notebook to match your local setup. This includes the paths for:
-* YOLO model (`model_path`)
-* Satellite image (`satellite_image_path`)
-* Video clips (`cam5_video`, `cam6_video`, `cam7_video`)
-* Homography point files for each camera
+The pipeline configuration is managed in `multi_camera_tracking_pipeline/multi_camera_tracker/config.py`.
+*   **Dataset Configuration**: The `LUMPI` and `CarLA` dictionaries define paths for videos, homography matrices, and camera ROIs.
+*   **Model Paths**: Ensure `MODEL_PATH` points to the correct YOLO weights.
+
+> [!NOTE]
+> If your dataset directory structure differs from the default, you must update the paths in `config.py` before running the pipeline.
 
 ### Running the Pipeline
-1.  Launch Jupyter Notebook or JupyterLab.
-2.  Open `pipeline.ipynb`.
-3.  After verifying the file paths, run all cells sequentially to start the tracking visualization.
+Run the pipeline from the root directory, specifying the dataset to use:
 
-***
+```bash
+# For the LUMPI dataset
+python multi_camera_tracking_pipeline/main.py --dataset LUMPI
 
-##  Future Work
+# For the CarLA dataset (if configured)
+python multi_camera_tracking_pipeline/main.py --dataset CarLA
+```
 
-This project is a foundational implementation with several key areas for improvement:
-
--   **Evaluation Pipeline**: Develop a robust evaluation framework to quantitatively measure the performance of each component using standard metrics (mAP for detection, Localization Error for projection, and CLEAR MOT for tracking).
+The system will:
+1.  Load the configuration for the selected dataset.
+2.  Process video feeds from all configured cameras.
+3.  Generate output files in the `output/` directory.
