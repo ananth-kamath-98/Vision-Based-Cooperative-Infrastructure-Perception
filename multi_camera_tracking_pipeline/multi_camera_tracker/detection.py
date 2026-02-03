@@ -10,7 +10,7 @@ def detect_and_cluster_vehicles(model, frame):
     Returns a list of centroid points for a single camera view.
     """
     results = model(frame, conf=config.DETECTION_CONFIDENCE,
-                    iou=config.DETECTION_IOU, classes=config.VEHICLE_CLASSES,
+                    iou=config.DETECTION_IOU, classes=[0],
                     verbose=False)
 
     detections = []

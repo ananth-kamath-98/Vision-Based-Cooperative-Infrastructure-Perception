@@ -9,7 +9,8 @@ OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 
 # --- Model and Detection Configuration ---
 MODEL_PATH = os.path.join(BASE_DIR, "../weights/yolo11m.pt")
-VEHICLE_CLASSES = [2, 3, 5, 7]
+# VEHICLE_CLASSES = [2, 3, 5, 7]
+VEHICLE_CLASSES = [0, 1]
 DETECTION_CONFIDENCE = 0.5
 DETECTION_IOU = 0.5
 DETECTION_OFFSET_FACTOR = 0.1
