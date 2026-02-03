@@ -73,19 +73,31 @@ The system processes multiple camera streams in a sequential pipeline to produce
 
 ## Usage
 
-The main pipeline is run from the `pipeline.ipynb` Jupyter Notebook.
+The main pipeline is executed via the command line using `multi_camera_tracking_pipeline/main.py`.
 
 ### Configuration
-Before running, you **must** update the file paths inside the `pipeline.ipynb` notebook to match your local setup. This includes the paths for:
-* YOLO model (`model_path`)
-* Satellite image (`satellite_image_path`)
-* Video clips (`cam5_video`, `cam6_video`, `cam7_video`)
-* Homography point files for each camera
+The pipeline configuration is managed in `multi_camera_tracking_pipeline/multi_camera_tracker/config.py`.
+*   **Dataset Configuration**: The `LUMPI` and `CarLA` dictionaries define paths for videos, homography matrices, and camera ROIs.
+*   **Model Paths**: Ensure `MODEL_PATH` points to the correct YOLO weights.
+
+> [!NOTE]
+> If your dataset directory structure differs from the default, you must update the paths in `config.py` before running the pipeline.
 
 ### Running the Pipeline
-1.  Launch Jupyter Notebook or JupyterLab.
-2.  Open `pipeline.ipynb`.
-3.  After verifying the file paths, run all cells sequentially to start the tracking visualization.
+Run the pipeline from the root directory, specifying the dataset to use:
+
+```bash
+# For the LUMPI dataset
+python multi_camera_tracking_pipeline/main.py --dataset LUMPI
+
+# For the CarLA dataset (if configured)
+python multi_camera_tracking_pipeline/main.py --dataset CarLA
+```
+
+The system will:
+1.  Load the configuration for the selected dataset.
+2.  Process video feeds from all configured cameras.
+3.  Generate output files in the `output/` directory.
 
 ***
 
